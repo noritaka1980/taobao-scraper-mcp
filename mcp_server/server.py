@@ -5,8 +5,13 @@ from mcp.server.fastmcp import FastMCP
 from mcp_server.config import MCPConfig
 from mcp_server.api_client import ScraperAPIClient
 
-# 创建 MCP Server 实例
-server = FastMCP("taobao-scraper")
+# 创建 MCP Server 实例（host/port 用于 SSE 模式）
+_cfg = MCPConfig()
+server = FastMCP(
+    "taobao-scraper",
+    host=_cfg.SSE_HOST,
+    port=_cfg.SSE_PORT,
+)
 
 # 全局配置和 API 客户端
 config = MCPConfig()

@@ -46,8 +46,11 @@ def main():
     elif args.transport == "sse":
         host = args.host or cfg.SSE_HOST
         port = args.port or cfg.SSE_PORT
+        # 新版 MCP SDK: host/port 在 FastMCP 构造函数中设置
+        server._host = host
+        server._port = port
         print(f"MCP SSE Server 启动: http://{host}:{port}/sse")
-        asyncio.run(server.run_sse_async(host=host, port=port))
+        asyncio.run(server.run_sse_async())
 
 
 if __name__ == "__main__":
