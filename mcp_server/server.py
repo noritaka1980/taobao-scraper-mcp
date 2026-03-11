@@ -7,10 +7,27 @@ from mcp_server.api_client import ScraperAPIClient
 
 # 创建 MCP Server 实例（host/port 用于 SSE 模式）
 _cfg = MCPConfig()
+
+# SSE 认证配置（仅影响 SSE 模式，stdio 模式不受影响）
+_auth_kwargs = {}
+if _cfg.SSE_AUTH_ENABLED:
+    from mcp.server.auth.settings import AuthSettings
+    from mcp_server.token_verifier import SimpleApiKeyTokenVerifier
+
+    _auth_kwargs = {
+        "token_verifier": SimpleApiKeyTokenVerifier(_cfg.API_KEY),
+        "auth": AuthSettings(
+            issuer_url=f"http://localhost:{_cfg.SSE_PORT}",
+            resource_server_url=f"http://localhost:{_cfg.SSE_PORT}",
+            required_scopes=["scrape"],
+        ),
+    }
+
 server = FastMCP(
     "taobao-scraper",
     host=_cfg.SSE_HOST,
     port=_cfg.SSE_PORT,
+    **_auth_kwargs,
 )
 
 # 全局配置和 API 客户端

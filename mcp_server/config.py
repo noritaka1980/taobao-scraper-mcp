@@ -22,3 +22,6 @@ class MCPConfig:
     # SSE 模式监听配置
     SSE_HOST: str = os.environ.get("MCP_SSE_HOST", "0.0.0.0")
     SSE_PORT: int = int(os.environ.get("MCP_SSE_PORT", "8001"))
+
+    # SSE 认证开关（true=启用 Bearer Token 认证，false=关闭）
+    SSE_AUTH_ENABLED: bool = os.environ.get("MCP_SSE_AUTH", "true").lower() == "true"
