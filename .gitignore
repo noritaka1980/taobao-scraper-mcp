@@ -1,0 +1,57 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+*.egg
+
+# Virtual environment
+env/
+venv/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Environment & secrets
+.env
+.env.local
+.env.production
+
+# Generated data files
+*.xlsx
+*.csv
+*.log
+scraper_log.txt
+
+# Debug files
+debug_screenshot.png
+jd_card_debug.html
+*.debug.*
+
+# Chrome profile (user-specific)
+_chrome_profile/
+
+# Dependency markers
+.deps_gui_installed
+
+# OS files
+Thumbs.db
+.DS_Store
+Desktop.ini
+
+# Claude Code local memory
+.claude/
+
+# Temp
+tmp/
+*.tmp
+*.bak

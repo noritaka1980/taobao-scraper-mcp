@@ -1,0 +1,17 @@
+# TaobaoScraper API 依赖
+# 安装命令: pip install -r requirements_api.txt
+
+# Web 框架
+fastapi
+uvicorn[standard]
+pydantic-settings
+
+# 采集核心
+selenium
+webdriver-manager
+pandas
+openpyxl
+pillow
+
+# Windows API (仅 Windows)
+pywin32; sys_platform == "win32"

@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "taobao-scraper": {
+      "command": "python",
+      "args": ["run_mcp.py"],
+      "cwd": "C:\\path\\to\\TaobaoScraper",
+      "env": {
+        "SCRAPER_API_URL": "http://localhost:8000",
+        "SCRAPER_API_KEY": "your-secret-key-here"
+      }
+    }
+  }
+}

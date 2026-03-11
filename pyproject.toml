@@ -1,0 +1,51 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[project]
+name = "taobao-scraper-mcp"
+version = "1.0.0"
+description = "MCP Server for Taobao & JD product data scraping with multi-platform support"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.10"
+keywords = ["mcp", "taobao", "jd", "scraper", "e-commerce"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+]
+
+dependencies = [
+    "mcp>=1.0.0",
+    "httpx>=0.27.0",
+    "uvicorn[standard]",
+    "starlette",
+]
+
+[project.optional-dependencies]
+api = [
+    "fastapi",
+    "pydantic-settings",
+    "selenium",
+    "webdriver-manager",
+    "pandas",
+    "openpyxl",
+    "pillow",
+    "pywin32; sys_platform == 'win32'",
+]
+
+[project.urls]
+Homepage = "https://github.com/yourusername/taobao-scraper-mcp"
+Issues = "https://github.com/yourusername/taobao-scraper-mcp/issues"
+
+[project.scripts]
+taobao-scraper-mcp = "run_mcp:main"
+
+[tool.setuptools.packages.find]
+include = ["mcp_server*", "api*"]
