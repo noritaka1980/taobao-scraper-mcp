@@ -38,7 +38,7 @@ Claude Desktop / Claude Code
 ### 2. Install
 
 ```bash
-git clone https://github.com/yourusername/taobao-scraper-mcp.git
+git clone https://github.com/jhongjun1981/taobao-scraper-mcp.git
 cd taobao-scraper-mcp
 
 # Install MCP server dependencies
