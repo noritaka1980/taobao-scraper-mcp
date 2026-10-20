@@ -2,7 +2,7 @@
 
 An MCP (Model Context Protocol) server for scraping product data from **Taobao/Tmall** and **JD.com** (Jingdong). Provides 8 tools that can be used directly in Claude Desktop or Claude Code.
 
-> **Platform**: Windows (requires Chrome browser)
+> **Platform**: Windows, macOS (requires Chrome browser). On macOS, start Chrome with `./start_chrome_mac.sh` instead of `START_GUI.bat`.
 > **Language**: Python 3.10+
 
 ## Features
@@ -235,7 +235,7 @@ Scraped data is automatically saved as Excel files containing:
 - **Taobao requires login** - You must login to your own Taobao account in Chrome first
 - **JD works without login** - JD scraping does not require authentication
 - **One task at a time** - Chrome can only handle one scraping task concurrently
-- **Windows only** - The Chrome automation layer uses Windows-specific APIs
+- **Windows and macOS** - The GUI (`scraper_gui.py`, `toggle_chrome.py`) and Excel image insertion via win32com remain Windows-only; the API and MCP server work on both
 - **Respect rate limits** - Excessive scraping may trigger anti-bot protection
 
 ## License

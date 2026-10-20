@@ -9,6 +9,8 @@ import socket
 import subprocess
 import time
 import os
+import shutil
+import sys
 import tempfile
 from typing import Optional
 
@@ -67,8 +69,27 @@ class ChromeManager:
             pass
         return None, None
 
+    @staticmethod
+    def _kill_chromedriver():
+        """杀残余 chromedriver 进程（Windows: taskkill / macOS, Linux: pkill）"""
+        cmd = (["taskkill", "/f", "/im", "chromedriver.exe"] if sys.platform == "win32"
+               else ["pkill", "-x", "chromedriver"])
+        try:
+            subprocess.call(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        except Exception:
+            pass
+
     def _find_chrome(self) -> Optional[str]:
         """查找 Chrome 可执行文件路径"""
+        if sys.platform != "win32":
+            # macOS / Linux
+            for p in (
+                "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+                os.path.expanduser("~/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"),
+            ):
+                if os.path.isfile(p):
+                    return p
+            return shutil.which("google-chrome") or shutil.which("chromium")
         import winreg
         candidates = [
             os.path.join(os.environ.get("PROGRAMFILES", ""), "Google", "Chrome", "Application", "chrome.exe"),
@@ -274,7 +295,8 @@ start "" "{chrome_path}" ^
             # 连不上就报错，不自动杀 Chrome 重启（避免丢失登录态和标签页）
             raise RuntimeError(
                 "无法连接 Chrome 调试端口，请先启动 Chrome"
-                "（运行 START_GUI.bat 或以 --remote-debugging-port=9222 启动）"
+                "（Windows: START_GUI.bat / macOS: ./start_chrome_mac.sh，"
+                "或以 --remote-debugging-port=9222 启动）"
             )
 
     def acquire(self, task_id: str, timeout: float = 300):
@@ -307,14 +329,7 @@ start "" "{chrome_path}" ^
             except Exception:
                 pass
             self._driver = None
-        # 杀残余 chromedriver 进程
-        try:
-            subprocess.call(
-                ["taskkill", "/f", "/im", "chromedriver.exe"],
-                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
-            )
-        except Exception:
-            pass
+        self._kill_chromedriver()
         self._is_busy = False
         self._current_task_id = None
         try:
@@ -326,14 +341,7 @@ start "" "{chrome_path}" ^
         """断开 chromedriver 后重新连接（不杀 Chrome 进程）"""
         with self._lock:
             self._driver = None
-            # 杀残余 chromedriver 进程
-            try:
-                subprocess.call(
-                    ["taskkill", "/f", "/im", "chromedriver.exe"],
-                    stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
-                )
-            except Exception:
-                pass
+            self._kill_chromedriver()
             time.sleep(1)
         return self.get_or_create_driver()
 
