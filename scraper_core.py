@@ -246,18 +246,25 @@ def get_text(el, selectors):
     return ""
 
 
+def _clean_item_url(href):
+    """Retire le suivi (?spm=...) mais garde ?id= : sans id le lien est inutilisable."""
+    base = re.sub(r"\?.*", "", href)
+    m = re.search(r"[?&]id=(\d+)", href)
+    return f"{base}?id={m.group(1)}" if m else base
+
+
 def get_link(card):
     try:
         # 1. 卡片自身可能就是<a>标签（新版淘宝）
         if card.tag_name == "a":
             href = card.get_attribute("href") or ""
             if "item.taobao.com" in href or "detail.tmall.com" in href:
-                return re.sub(r"\?.*", "", href)
+                return _clean_item_url(href)
         # 2. 内部<a>标签
         for a in card.find_elements(By.TAG_NAME, "a"):
             href = a.get_attribute("href") or ""
             if "item.taobao.com" in href or "detail.tmall.com" in href:
-                return re.sub(r"\?.*", "", href)
+                return _clean_item_url(href)
         # 3. 从 id/data-spm-act-id 提取商品ID拼接链接
         item_id = ""
         el_id = card.get_attribute("id") or ""
